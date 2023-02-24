@@ -2,18 +2,25 @@
 
 namespace Orleans.Sagas
 {
-    public class SagaState
+	[GenerateSerializer]
+	public class SagaState
     {
-        public List<ActivityDefinition> Activities { get; set; }
-        
-        public int NumCompletedActivities { get; set; }
-        
-        public SagaStatus Status { get; set; }
-        
-        public int CompensationIndex { get; set; }
-        
-        public bool HasBeenAborted { get; set; }
+		[Id(0)]
+		public List<ActivityDefinition> Activities { get; set; }
 
-        public Dictionary<string, string> Properties { get; set; }
+		[Id(1)]
+		public int NumCompletedActivities { get; set; }
+
+		[Id(2)]
+		public SagaStatus Status { get; set; }
+
+		[Id(3)]
+		public int CompensationIndex { get; set; }
+
+		[Id(4)]
+		public bool HasBeenAborted { get; set; }
+
+		[Id(5)]
+		public Dictionary<string, string> Properties { get; set; }
     }
 }

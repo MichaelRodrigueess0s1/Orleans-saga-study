@@ -2,15 +2,18 @@
 
 namespace Orleans.Sagas
 {
-    public class ActivityDefinition
-    {
-        public Type Type { get; }
-        public ISagaPropertyBag Properties { get; }
+	[GenerateSerializer]
+	public class ActivityDefinition
+	{
+		[Id(0)]
+		public Type Type { get; }
+		[Id(1)]
+		public ISagaPropertyBag Properties { get; }
 
-        public ActivityDefinition(Type type, ISagaPropertyBag properties)
-        {
-            Type = type;
-            Properties = properties;
-        }
-    }
+		public ActivityDefinition(Type type, ISagaPropertyBag properties)
+		{
+			Type = type;
+			Properties = properties;
+		}
+	}
 }

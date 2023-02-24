@@ -1,7 +1,9 @@
 ﻿namespace Orleans.Sagas
 {
-    public class SagaCancellationGrainState
-    {
-        public bool AbortRequested { get; set; }
-    }
+	[GenerateSerializer]
+	public class SagaCancellationGrainState
+	{
+		[Id(0)]
+		public bool AbortRequested { get; set; }
+	}
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
+using Orleans.Sagas.Grains.Activities;
+using Orleans.Sagas.Grains.Activities.Interfaces;
 using System;
 using System.Threading.Tasks;
 

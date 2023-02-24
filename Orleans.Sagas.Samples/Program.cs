@@ -4,11 +4,8 @@ using Microsoft.Extensions.Logging;
 using Orleans.Configuration;
 using Orleans.Hosting;
 using Orleans.Sagas.Grains.Activities;
-using Orleans.Sagas.Samples.Activities;
-using Orleans.Sagas.Samples.Examples;
 using Orleans.Sagas.Silo.Factories;
 using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace Orleans.Sagas.Silo
@@ -38,11 +35,8 @@ namespace Orleans.Sagas.Silo
 						})
 						.ConfigureServices(services =>
 						{
-							services.AddSingleton<HttpClient>();
-
 							services.AddTransient<BankTransfer>();
-
-							services.AddHostedService<SampleRunner>();
+							services.AddHostedService<Runner>();
 						})
 					   .AddMemoryGrainStorageAsDefault()
 					   .UseInMemoryReminderService();

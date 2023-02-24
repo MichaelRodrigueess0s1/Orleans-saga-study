@@ -2,8 +2,8 @@
 
 namespace Orleans.Sagas
 {
-    public interface IErrorTranslator
-    {
-       string Translate(Exception exception);
-    }
+	public interface IErrorTranslator
+	{
+		string Translate(Exception exception);
+	}
 }

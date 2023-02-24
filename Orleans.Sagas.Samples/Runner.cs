@@ -6,23 +6,22 @@ using System.Threading.Tasks;
 
 namespace Orleans.Sagas.Silo
 {
-	class SampleRunner : IHostedService
+	class Runner : IHostedService
 	{
 		private readonly BankTransfer BankTransfer;
-		private readonly ILogger<SampleRunner> logger;
+		private readonly ILogger<Runner> Logger;
 
-		public SampleRunner(
+		public Runner(
 			BankTransfer bankTransferSample,
-			ILogger<SampleRunner> logger)
+			ILogger<Runner> logger)
 		{
-			this.BankTransfer = bankTransferSample;
-			this.logger = logger;
+			BankTransfer = bankTransferSample;
+			Logger = logger;
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-
-			logger.LogDebug($"Running  '{BankTransfer.GetType().Name}'...");
+			Logger.LogDebug($"Running  '{BankTransfer.GetType().Name}'...");
 			await BankTransfer.Execute();
 		}
 
