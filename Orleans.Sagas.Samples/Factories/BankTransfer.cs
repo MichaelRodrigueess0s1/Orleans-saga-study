@@ -1,21 +1,19 @@
 ﻿using Microsoft.Extensions.Logging;
-using Orleans.Sagas.Samples.Activities;
-using Orleans.Sagas.Samples.Activities.Interfaces;
 using System;
 using System.Threading.Tasks;
 
-namespace Orleans.Sagas.Samples.Examples
+namespace Orleans.Sagas.Silo.Factories
 {
-	public class BankTransferSample : Sample
+	public class BankTransfer : GrainFactory
 	{
-		public BankTransferSample(IGrainFactory grainFactory, ILogger<Sample> logger) : base(grainFactory, logger)
+		public BankTransfer(IGrainFactory grainFactory, ILogger<GrainFactory> logger) : base(grainFactory, logger)
 		{
 		}
 
 		public override async Task Execute()
 		{
-			await GrainFactory.GetGrain<IBankAccountGrain>(1).ModifyBalance(Guid.Empty, 75);
-			await GrainFactory.GetGrain<IBankAccountGrain>(2).ModifyBalance(Guid.Empty, 75);
+			await Factory.GetGrain<IBankAccountGrain>(1).ModifyBalance(Guid.Empty, 75);
+			await Factory.GetGrain<IBankAccountGrain>(2).ModifyBalance(Guid.Empty, 75);
 			await TransferAndWait(1, 2, 25);
 			await TransferAndWait(2, 1, 20);
 		}
@@ -23,19 +21,20 @@ namespace Orleans.Sagas.Samples.Examples
 		private async Task TransferAndWait(int from, int to, int amount)
 		{
 			var saga = await Transfer(from, to, amount);
+
 			await saga.Wait();
 
 			Logger.LogInformation("Account balances:");
 			for (int accountId = 1; accountId <= 2; accountId++)
 			{
-				var account = GrainFactory.GetGrain<IBankAccountGrain>(accountId);
+				var account = Factory.GetGrain<IBankAccountGrain>(accountId);
 				Logger.LogInformation($"  #{accountId} : {await account.GetBalance()}");
 			}
 		}
 
 		private async Task<ISagaGrain> Transfer(int from, int to, int amount)
 		{
-			return await GrainFactory.CreateSaga()
+			return await Factory.CreateSaga()
 				.AddActivity<BalanceModificationActivity>
 				(
 					x =>

@@ -3,13 +3,15 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using Orleans.Sagas.Grains.Activities;
 using Orleans.Sagas.Samples.Activities;
 using Orleans.Sagas.Samples.Examples;
+using Orleans.Sagas.Silo.Factories;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-namespace Orleans.Sagas.Samples
+namespace Orleans.Sagas.Silo
 {
 	class Program
 	{
@@ -38,27 +40,10 @@ namespace Orleans.Sagas.Samples
 						{
 							services.AddSingleton<HttpClient>();
 
-							services.AddTransient<AbortSample>();
-							services.AddTransient<DependencyInjectionSample>();
-							services.AddTransient<BankTransferSample>();
-							services.AddTransient<DukeSample>();
-							services.AddTransient<TravelSample>();
-							services.AddTransient<ConcurrencySample>();
-							services.AddTransient<ErrorReportSample>();
+							services.AddTransient<BankTransfer>();
 
 							services.AddHostedService<SampleRunner>();
 						})
-					   //.AddAdoNetGrainStorageAsDefault(opts =>
-					   //{
-					   //    opts.Invariant = "System.Data.SqlClient";
-					   //    opts.ConnectionString = "Server=.;Database=Orleans.Sagas;Integrated Security=true;";
-					   //    //opts.UseJsonFormat = true;
-					   //})
-					   // .UseAdoNetReminderService(opts =>
-					   // {
-					   //     opts.Invariant = "System.Data.SqlClient";
-					   //     opts.ConnectionString = "Server=.;Database=Orleans.Sagas;Integrated Security=true;";
-					   // });
 					   .AddMemoryGrainStorageAsDefault()
 					   .UseInMemoryReminderService();
 				})

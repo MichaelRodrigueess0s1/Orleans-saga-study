@@ -1,27 +1,28 @@
-﻿using Orleans.Sagas.Samples.Activities.Interfaces;
+﻿
+using Orleans.Sagas.Grains.Activities.Interfaces;
 using System.Threading.Tasks;
 
-namespace Orleans.Sagas.Samples.Activities
+namespace Orleans.Sagas.Grains.Activities
 {
-    public class BalanceModificationActivity : IActivity
-    {
-        public async Task Execute(IActivityContext context)
-        {
-            var account = context.SagaProperties.Get<int>("Account");
-            var amount = context.SagaProperties.Get<int>("Amount");
+	public class BalanceModificationActivity : IActivity
+	{
+		public async Task Execute(IActivityContext context)
+		{
+			var account = context.SagaProperties.Get<int>("Account");
+			var amount = context.SagaProperties.Get<int>("Amount");
 
-            var sourceAccount = context.GrainFactory.GetGrain<IBankAccountGrain>(account);
+			var sourceAccount = context.GrainFactory.GetGrain<IBankAccountGrain>(account);
 
-            await sourceAccount.ModifyBalance(context.SagaId, amount);
-        }
+			await sourceAccount.ModifyBalance(context.SagaId, amount);
+		}
 
-        public async Task Compensate(IActivityContext context)
-        {
-            var account = context.SagaProperties.Get<int>("Account");
+		public async Task Compensate(IActivityContext context)
+		{
+			var account = context.SagaProperties.Get<int>("Account");
 
-            var sourceAccount = context.GrainFactory.GetGrain<IBankAccountGrain>(account);
+			var sourceAccount = context.GrainFactory.GetGrain<IBankAccountGrain>(account);
 
-            await sourceAccount.RevertBalanceModification(context.SagaId);
-        }
-    }
+			await sourceAccount.RevertBalanceModification(context.SagaId);
+		}
+	}
 }

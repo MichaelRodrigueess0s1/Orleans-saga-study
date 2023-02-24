@@ -1,8 +1,25 @@
 ﻿using System;
+using System.Runtime.Serialization;
 
-namespace Orleans.Sagas.Samples.Activities.Exceptions
+namespace Orleans.Sagas.Grains.Exceptions
 {
-    public class InvalidBalanceException : Exception
-    {
-    }
+	[Serializable]
+	internal class InvalidBalanceException : Exception
+	{
+		public InvalidBalanceException()
+		{
+		}
+
+		public InvalidBalanceException(string message) : base(message)
+		{
+		}
+
+		public InvalidBalanceException(string message, Exception innerException) : base(message, innerException)
+		{
+		}
+
+		protected InvalidBalanceException(SerializationInfo info, StreamingContext context) : base(info, context)
+		{
+		}
+	}
 }

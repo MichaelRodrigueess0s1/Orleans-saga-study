@@ -1,53 +1,54 @@
-﻿using System;
-using Orleans.Sagas.Samples.Activities.Interfaces;
+﻿using Orleans.Sagas.Grains.Activities.Interfaces;
+using Orleans.Sagas.Grains.Exceptions;
+using System;
 using System.Threading.Tasks;
-using Orleans.Sagas.Samples.Activities.Exceptions;
 
-namespace Orleans.Sagas.Samples.Activities.Grains
+
+namespace Orleans.Sagas.Grains.Activities.Grains
 {
-    public class BankAccountGrain : Grain<BankAccountState>, IBankAccountGrain
-    {
-        public Task<int> GetBalance()
-        {
-            return Task.FromResult(State.Balance);
-        }
+	public class BankAccountGrain : Grain<BankAccountState>, IBankAccountGrain
+	{
+		public Task<int> GetBalance()
+		{
+			return Task.FromResult(State.Balance);
+		}
 
-        public async Task ModifyBalance(Guid transactionId, int amount)
-        {
-            if (State.Transactions.ContainsKey(transactionId))
-            { 
-                return;
-            }
+		public async Task ModifyBalance(Guid transactionId, int amount)
+		{
+			if (State.Transactions.ContainsKey(transactionId))
+			{
+				return;
+			}
 
-            var newBalance = State.Balance + amount;
+			var newBalance = State.Balance + amount;
 
-            if (newBalance >= 0 &&
-                newBalance <= 100)
-            { 
-                State.Balance += amount;
-                State.Transactions[transactionId] = amount;
-                await WriteStateAsync();
-                return;
-            }
+			if (newBalance >= 0 &&
+				newBalance <= 100)
+			{
+				State.Balance += amount;
+				State.Transactions[transactionId] = amount;
+				await WriteStateAsync();
+				return;
+			}
 
-            throw new InvalidBalanceException();
-        }
+			throw new InvalidBalanceException();
+		}
 
-        public async Task RevertBalanceModification(Guid transactionId)
-        {
-            if (State.Transactions.ContainsKey(transactionId))
-            {
-                if (State.Transactions[transactionId] == 0)
-                {
-                    return;
-                }
+		public async Task RevertBalanceModification(Guid transactionId)
+		{
+			if (State.Transactions.ContainsKey(transactionId))
+			{
+				if (State.Transactions[transactionId] == 0)
+				{
+					return;
+				}
 
-                State.Balance -= State.Transactions[transactionId];
-            }
+				State.Balance -= State.Transactions[transactionId];
+			}
 
-            State.Transactions[transactionId] = 0;
+			State.Transactions[transactionId] = 0;
 
-            await WriteStateAsync();
-        }
-    }
+			await WriteStateAsync();
+		}
+	}
 }

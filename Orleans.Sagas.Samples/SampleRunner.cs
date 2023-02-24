@@ -1,47 +1,29 @@
 ﻿using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using Orleans.Sagas.Samples.Examples;
+using Orleans.Sagas.Silo.Factories;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Orleans.Sagas.Samples
+namespace Orleans.Sagas.Silo
 {
 	class SampleRunner : IHostedService
 	{
-		private readonly Sample[] samples;
+		private readonly BankTransfer BankTransfer;
 		private readonly ILogger<SampleRunner> logger;
 
 		public SampleRunner(
-			AbortSample abortSample,
-			DependencyInjectionSample dependencyInjectionSample,
-			BankTransferSample bankTransferSample,
-			ConcurrencySample concurrencySample,
-			DukeSample dukeSample,
-			TravelSample travelSample,
-			ErrorReportSample errorReportSample,
+			BankTransfer bankTransferSample,
 			ILogger<SampleRunner> logger)
 		{
-			samples = new Sample[]
-			{
-				abortSample,
-				travelSample,
-				dependencyInjectionSample,
-				bankTransferSample,
-				concurrencySample,
-				dukeSample,
-				//errorReportSample
-			};
-
+			this.BankTransfer = bankTransferSample;
 			this.logger = logger;
 		}
 
 		public async Task StartAsync(CancellationToken cancellationToken)
 		{
-			foreach (var sample in samples)
-			{
-				logger.LogDebug($"Running sample '{sample.GetType().Name}'...");
-				await sample.Execute();
-			}
+
+			logger.LogDebug($"Running  '{BankTransfer.GetType().Name}'...");
+			await BankTransfer.Execute();
 		}
 
 		public Task StopAsync(CancellationToken cancellationToken)
