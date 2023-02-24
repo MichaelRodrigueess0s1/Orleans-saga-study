@@ -1,0 +1,12 @@
+<Project>
+
+  <PropertyGroup>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DefaultTargetFrameworkVersion>net7.0</DefaultTargetFrameworkVersion>
+    <OrleansVersion>7.0.0</OrleansVersion>
+  </PropertyGroup>
+
+</Project>

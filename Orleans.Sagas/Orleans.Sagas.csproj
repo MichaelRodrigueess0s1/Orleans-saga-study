@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>$(DefaultTargetFrameworkVersion)</TargetFramework>
+    <Version>0.0.45-pre</Version>
+    <Description>A distributed saga implementation for Orleans</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Orleans.Reminders" Version="$(OrleansVersion)" />
+    <PackageReference Include="Microsoft.Orleans.Sdk" Version="$(OrleansVersion)" />
+  </ItemGroup>
+
+</Project>
