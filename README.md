@@ -1,1 +1,1 @@
-Just study repository based on : https://github.com/OrleansContrib/Orleans.Sagas
+study-only repository based on https://github.com/OrleansContrib/Orleans.Sagas
